@@ -24,9 +24,4 @@ INSERT INTO foods (name, price, menu_item_id) VALUES
 ('Americano', 30.00, 4),
 ('Iced Latte', 45.00, 5);
 
--- Default users (password: password123)
-INSERT INTO users (name, email, password_hash, role, department_id) VALUES
-('Admin User', 'admin@coffee.local', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Admin', 1),
-('Staff Barista', 'staff@coffee.local', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Staff', 1);
-
 -- Users: npm run seed (bcrypt passwords)

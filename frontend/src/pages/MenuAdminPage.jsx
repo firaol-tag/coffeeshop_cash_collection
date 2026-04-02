@@ -16,7 +16,7 @@ export default function MenuAdminPage() {
   const imageInputRef = useRef(null);
 
   const load = useCallback(() => {
-    api('/api/menu-items').then(setItems).catch(() => setItems([]));
+    api('/api/foods').then(setItems).catch(() => setItems([]));
   }, []);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function MenuAdminPage() {
     if (file) fd.append('image', file);
 
     try {
-      await api('/api/menu-items', {
+      await api('/api/foods', {
         method: 'POST',
         body: fd,
       });
@@ -54,7 +54,7 @@ export default function MenuAdminPage() {
     if (!editing) return;
     setMsg('');
     try {
-      await api(`/api/menu-items/${editing.id}`, {
+      await api(`/api/foods/${editing.id}`, {
         method: 'PATCH',
         body: {
           name: editing.name,
@@ -73,7 +73,7 @@ export default function MenuAdminPage() {
   async function remove(id) {
     if (!confirm('Delete this item?')) return;
     try {
-      await api(`/api/menu-items/${id}`, { method: 'DELETE' });
+      await api(`/api/foods/${id}`, { method: 'DELETE' });
       load();
     } catch (err) {
       alert(err.message);

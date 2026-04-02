@@ -30,6 +30,9 @@ export default function Layout() {
             <NavLink to="/credits" className={linkClass}>
               Credit
             </NavLink>
+            <NavLink to="/categories" className={linkClass}>
+              Categories
+            </NavLink>
             <NavLink to="/menu" className={linkClass}>
               Menu
             </NavLink>

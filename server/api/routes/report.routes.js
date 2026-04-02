@@ -7,5 +7,7 @@ const router = Router();
 router.use(authRequired, requireAdmin);
 router.get('/monthly', reportController.monthly);
 router.get('/yearly', reportController.yearly);
+router.get('/top-foods', reportController.topFoods);
+router.get('/daily', reportController.daily);
 
 export default router;

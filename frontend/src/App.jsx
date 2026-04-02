@@ -6,6 +6,7 @@ import PosPage from './pages/PosPage.jsx';
 import CreditsPage from './pages/CreditsPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
 import UsersPage from './pages/UsersPage.jsx';
+import CategoryPage from './pages/CategoryPage.jsx';
 import MenuAdminPage from './pages/MenuAdminPage.jsx';
 
 function PrivateRoute({ children }) {
@@ -41,6 +42,7 @@ export default function App() {
       >
         <Route index element={<PosPage />} />
         <Route path="credits" element={<CreditsPage />} />
+        <Route path="categories" element={<CategoryPage />} />
         <Route path="menu" element={<MenuAdminPage />} />
         <Route
           path="dashboard"

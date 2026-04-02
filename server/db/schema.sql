@@ -20,17 +20,32 @@ CREATE TABLE IF NOT EXISTS users (
     FOREIGN KEY (department_id) REFERENCES departments(id)
 );
 
--- 3. Menu Items
+-- 3. Menus (categories)
+CREATE TABLE IF NOT EXISTS menus (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL UNIQUE
+);
+
+-- 4. Menu Items (sub-categories)
 CREATE TABLE IF NOT EXISTS menu_items (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
-    category ENUM('Food', 'Drink') NOT NULL,
-    sub_category ENUM('Breakfast', 'Lunch', 'Snack', 'Hot', 'Cold') NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
-    image_filename VARCHAR(255) NULL
+    menu_id INT NOT NULL,
+    FOREIGN KEY (menu_id) REFERENCES menus(id)
 );
 
--- 4. Bookings
+-- 5. Foods (actual items)
+CREATE TABLE IF NOT EXISTS foods (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    menu_item_id INT NOT NULL,
+    image_filename VARCHAR(255) NULL,
+    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id)
+);
+
+-- 6. Bookings
 CREATE TABLE IF NOT EXISTS bookings (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
@@ -43,13 +58,13 @@ CREATE TABLE IF NOT EXISTS bookings (
     FOREIGN KEY (processed_by) REFERENCES users(id)
 );
 
--- 5. Booking Items
+-- 7. Booking Items
 CREATE TABLE IF NOT EXISTS booking_items (
     id INT PRIMARY KEY AUTO_INCREMENT,
     booking_id INT NOT NULL,
-    menu_item_id INT NOT NULL,
+    food_id INT NOT NULL,
     quantity INT NOT NULL,
     price_at_time DECIMAL(10, 2),
     FOREIGN KEY (booking_id) REFERENCES bookings(id) ON DELETE CASCADE,
-    FOREIGN KEY (menu_item_id) REFERENCES menu_items(id)
+    FOREIGN KEY (food_id) REFERENCES foods(id)
 );

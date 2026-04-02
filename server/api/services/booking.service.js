@@ -21,9 +21,9 @@ export async function listBookings(query) {
 
   for (const row of rows) {
     const [items] = await pool.query(
-      `SELECT bi.id, bi.menu_item_id, bi.quantity, bi.price_at_time, m.name AS menu_name
+      `SELECT bi.id, bi.food_id, bi.quantity, bi.price_at_time, f.name AS menu_name
        FROM booking_items bi
-       JOIN menu_items m ON m.id = bi.menu_item_id
+       JOIN foods f ON f.id = bi.food_id
        WHERE bi.booking_id = ?`,
       [row.id]
     );
@@ -52,22 +52,22 @@ export async function createBooking(body, processedByUserId) {
     let total = 0;
     const lineRows = [];
     for (const line of items) {
-      const { menu_item_id, quantity } = line;
+      const { food_id, quantity } = line;
       const q = Number(quantity);
-      if (!menu_item_id || !q || q < 1) {
+      if (!food_id || !q || q < 1) {
         throw new HttpError(400, 'Invalid line item');
       }
       const [mrows] = await conn.query(
-        'SELECT id, price FROM menu_items WHERE id = ? FOR UPDATE',
-        [menu_item_id]
+        'SELECT id, price FROM foods WHERE id = ? FOR UPDATE',
+        [food_id]
       );
       const menu = mrows[0];
       if (!menu) {
-        throw new HttpError(400, 'Unknown menu_item_id');
+        throw new HttpError(400, 'Unknown food_id');
       }
       const lineTotal = Number(menu.price) * q;
       total += lineTotal;
-      lineRows.push({ menu_item_id, quantity: q, price_at_time: menu.price });
+      lineRows.push({ food_id, quantity: q, price_at_time: menu.price });
     }
 
     const [bResult] = await conn.query(
@@ -79,9 +79,9 @@ export async function createBooking(body, processedByUserId) {
 
     for (const line of lineRows) {
       await conn.query(
-        `INSERT INTO booking_items (booking_id, menu_item_id, quantity, price_at_time)
+        `INSERT INTO booking_items (booking_id, food_id, quantity, price_at_time)
          VALUES (?, ?, ?, ?)`,
-        [bookingId, line.menu_item_id, line.quantity, line.price_at_time]
+        [bookingId, line.food_id, line.quantity, line.price_at_time]
       );
     }
 

@@ -4,6 +4,7 @@ import { HttpError } from '../utils/httpError.js';
 export async function login(req, res, next) {
   try {
     const result = await authService.login(req.body?.email, req.body?.password);
+    console.log("request is comin")
     res.json(result);
   } catch (e) {
     if (e instanceof HttpError) return res.status(e.status).json({ error: e.message });

@@ -27,7 +27,7 @@ export default function PosPage() {
   const [toast, setToast] = useState(null);
 
   const loadMenu = useCallback(() => {
-    api('/api/menu-items').then(setMenu).catch(() => setMenu([]));
+    api('/api/foods').then(setMenu).catch(() => setMenu([]));
   }, []);
 
   const loadEmployees = useCallback((q) => {
@@ -82,7 +82,7 @@ export default function PosPage() {
           user_id: selectedEmployee.id,
           payment_type: paymentType,
           items: lines.map((l) => ({
-            menu_item_id: l.item.id,
+            food_id: l.item.id,
             quantity: l.qty,
           })),
         },
